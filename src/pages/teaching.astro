@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import { teaching } from '../data/teaching';
+const groups = teaching.filter((g) => g.items.length > 0);
+---
+<Base title="Teaching" current="teaching"
+  description="Teaching by Francisco von Hafe at Nova SBE, and executive education and invited lectures on health economics and value-based healthcare.">
+  <h1 class="page">Teaching</h1>
+  <p class="lede">University teaching at Nova SBE, and executive education and invited lectures on health economics, costing and value-based healthcare.</p>
+  {groups.map((g) => (
+    <section>
+      <h2>{g.title}</h2>
+      <ul class="pubs">
+        {g.items.map((t) => (
+          <li class="pub">
+            <div class="yr">{t.period}</div>
+            <div>
+              <p class="t">{t.title}</p>
+              <p class="ve">{t.role}, {t.where}</p>
+              {t.note && <p class="au">{t.note}</p>}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</Base>

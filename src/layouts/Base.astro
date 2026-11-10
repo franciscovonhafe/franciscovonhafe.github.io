@@ -3,7 +3,7 @@ import '../styles/fonts.css';
 import '../styles/global.css';
 import { site } from '../data/site';
 
-interface Props { title?: string; description?: string; current?: 'home' | 'research' | 'contact' | 'none'; }
+interface Props { title?: string; description?: string; current?: 'home' | 'research' | 'teaching' | 'contact' | 'none'; }
 const { title, description = site.description, current = 'none' } = Astro.props;
 const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | Economist, Health Economics`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
@@ -30,6 +30,7 @@ const person = {
 const nav = [
   { key: 'home', label: 'Home', href: '/' },
   { key: 'research', label: 'Research', href: '/research/' },
+  { key: 'teaching', label: 'Teaching', href: '/teaching/' },
   { key: 'cv', label: 'CV', href: site.cv.href },
   { key: 'contact', label: 'Contact', href: '/contact/' },
 ];
