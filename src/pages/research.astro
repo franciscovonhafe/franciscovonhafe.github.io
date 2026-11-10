@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import PubList from '../components/PubList.astro';
+import { publications, sections } from '../data/publications';
+import { topics } from '../data/topics';
+const groups = sections
+  .map((s) => ({ ...s, items: publications.filter((p) => p.category === s.category).sort((a, b) => b.year - a.year) }))
+  .filter((g) => g.items.length > 0);
+const total = publications.length;
+---
+<Base title="Research" current="research"
+  description="Publications and research outputs by Francisco von Hafe on health economics, digital health, economic evaluation and healthcare variation.">
+  <h1 class="page">Research</h1>
+  <p class="lede">Peer-reviewed articles, letters, preprints and other research outputs, in reverse chronological order. Each title links to the published version.</p>
+
+  <div role="group" aria-label="Filter by topic" id="filter-group" hidden>
+    <ul class="filters">
+      <li><button type="button" data-t="all" aria-pressed="true">All</button></li>
+      {Object.entries(topics).map(([k, l]) => (
+        <li><button type="button" data-t={k} aria-pressed="false" style={`--c:var(--t-${k})`}>{l}</button></li>
+      ))}
+    </ul>
+  </div>
+  <p class="count" id="count" aria-live="polite">{total} outputs</p>
+
+  {groups.map((g) => (
+    <section class="pubgroup">
+      <h2>{g.title}</h2>
+      <PubList items={g.items} />
+    </section>
+  ))}
+  <p class="empty" id="empty" hidden>No outputs in this topic yet.</p>
+
+  <script>
+    const group = document.getElementById('filter-group')!;
+    group.hidden = false;
+    const buttons = [...group.querySelectorAll<HTMLButtonElement>('button[data-t]')];
+    const items = [...document.querySelectorAll<HTMLElement>('.pub')];
+    const sectionsEl = [...document.querySelectorAll<HTMLElement>('.pubgroup')];
+    const count = document.getElementById('count')!;
+    const empty = document.getElementById('empty')!;
+    function apply(t: string) {
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.t === t)));
+      let n = 0;
+      for (const li of items) {
+        const show = t === 'all' || (li.dataset.topics ?? '').split(' ').includes(t);
+        li.hidden = !show;
+        if (show) n++;
+      }
+      for (const s of sectionsEl) {
+        const visible = [...s.querySelectorAll<HTMLElement>('.pub')].filter((li) => !li.hidden);
+        s.hidden = visible.length === 0;
+        // keep the year shown on the first visible item of each run
+        let prev = '';
+        for (const li of visible) {
+          const yr = li.querySelector('.yr')!;
+          yr.classList.toggle('repeat', yr.textContent === prev);
+          prev = yr.textContent ?? '';
+        }
+      }
+      count.textContent = `${n} ${n === 1 ? 'output' : 'outputs'}`;
+      empty.hidden = n > 0;
+    }
+    buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.t!)));
+  </script>
+</Base>

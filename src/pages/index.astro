@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import PubList from '../components/PubList.astro';
+import { site } from '../data/site';
+import { publications } from '../data/publications';
+const featured = publications.filter((p) => p.featured).sort((a, b) => b.year - a.year);
+---
+<Base current="home">
+  <div class="intro band">
+    <div>
+      <h1>{site.name}</h1>
+      <p class="roles">
+        {site.roles.map((r) => <span>{r.text} <a href={r.href}>{r.org}</a></span>)}
+      </p>
+      <div class="bio">{site.bio.map((p) => <p>{p}</p>)}</div>
+      <ul class="quick">
+        <li><a href="/research/">Research</a></li>
+        <li><a href={site.cv.href}>CV (PDF)</a></li>
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li><a href={site.profiles[0].href}>ORCID</a></li>
+      </ul>
+    </div>
+    <figure class="portrait">
+      <picture>
+        <source type="image/webp" srcset="/images/francisco-von-hafe-480.webp 480w, /images/francisco-von-hafe-960.webp 960w" sizes="(max-width: 680px) 8.5rem, 12.5rem" />
+        <img src="/images/francisco-von-hafe-480.jpg" srcset="/images/francisco-von-hafe-480.jpg 480w, /images/francisco-von-hafe-960.jpg 960w" sizes="(max-width: 680px) 8.5rem, 12.5rem" width="480" height="537" alt="Portrait of Francisco von Hafe" fetchpriority="high" />
+      </picture>
+    </figure>
+  </div>
+
+  <h2>Research interests</h2>
+  <ul class="interests">
+    {site.interests.map((i) => <li style={i.topic ? `--c:var(--t-${i.topic})` : undefined}>{i.label}</li>)}
+  </ul>
+
+  <h2>Selected publications</h2>
+  <PubList items={featured} />
+  <p style="margin-top:1.2rem"><a href="/research/">All publications and research outputs</a></p>
+</Base>

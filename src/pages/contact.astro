@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+<Base title="Contact" current="contact"
+  description="Contact Francisco von Hafe, Economist at Value for Health CoLAB and PhD candidate in Economics at Nova SBE.">
+  <h1 class="page">Contact</h1>
+  <p class="lede">I welcome messages about my research, potential collaborations, seminars and related academic or policy work.</p>
+  <p class="email-big"><a href={`mailto:${site.email}`}>{site.email}</a></p>
+
+  <h2>Affiliations</h2>
+  <div class="affils">
+    {site.affiliations.map((a) => (
+      <div>
+        <h3>{a.href ? <a href={a.href}>{a.name}</a> : a.name}</h3>
+        <p>{a.role}<br />{a.detail}</p>
+      </div>
+    ))}
+  </div>
+
+  <h2>Profiles</h2>
+  <dl class="profiles">
+    {site.profiles.map((p) => (
+      <Fragment><dt>{p.label}</dt><dd><a href={p.href}>{p.text}</a></dd></Fragment>
+    ))}
+  </dl>
+</Base>

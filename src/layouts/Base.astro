@@ -1,0 +1,82 @@
+---
+import '../styles/fonts.css';
+import '../styles/global.css';
+import { site } from '../data/site';
+
+interface Props { title?: string; description?: string; current?: 'home' | 'research' | 'contact' | 'none'; }
+const { title, description = site.description, current = 'none' } = Astro.props;
+const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | Economist, Health Economics`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL('/images/francisco-von-hafe-og.jpg', site.url).href;
+
+// Structured data describing the person (facts taken from the CV).
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  url: site.url,
+  image: ogImage,
+  email: `mailto:${site.email}`,
+  jobTitle: 'Economist',
+  worksFor: { '@type': 'Organization', name: 'Value for Health CoLAB', url: 'https://vohcolab.org/' },
+  affiliation: [
+    { '@type': 'CollegeOrUniversity', name: 'Nova School of Business and Economics', url: 'https://www.novasbe.unl.pt/' },
+    { '@type': 'Organization', name: 'Comprehensive Health Research Center, NOVA Medical School' },
+  ],
+  knowsAbout: ['Health economics', 'Digital health', 'Value-based healthcare', 'Economic evaluation', 'Healthcare variation'],
+  address: { '@type': 'PostalAddress', addressLocality: 'Lisbon', addressCountry: 'PT' },
+  sameAs: site.profiles.map((p) => p.href),
+};
+const nav = [
+  { key: 'home', label: 'Home', href: '/' },
+  { key: 'research', label: 'Research', href: '/research/' },
+  { key: 'cv', label: 'CV', href: site.cv.href },
+  { key: 'contact', label: 'Contact', href: '/contact/' },
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <meta name="author" content={site.name} />
+  <link rel="canonical" href={canonical} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  <meta name="theme-color" content="#21466B" />
+  <meta property="og:type" content={current === 'home' ? 'profile' : 'website'} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:site_name" content={site.name} />
+  <meta name="twitter:card" content="summary" />
+  {current === 'home' && <script type="application/ld+json" set:html={JSON.stringify(person)} />}
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site">
+    <div class="wrap">
+      <a class="wordmark" href="/">{site.name}</a>
+      <nav aria-label="Main">
+        <ul>
+          {nav.map((n) => (
+            <li><a href={n.href} aria-current={n.key === current ? 'page' : undefined}>{n.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main" class="wrap">
+    <slot />
+  </main>
+  <footer>
+    <div class="wrap">
+      <p>{site.name}, Lisbon<br /><a href={`mailto:${site.email}`}>{site.email}</a></p>
+      <p>Personal academic website.<br />Not an official page of Nova SBE or VOH.CoLAB.</p>
+    </div>
+  </footer>
+</body>
+</html>

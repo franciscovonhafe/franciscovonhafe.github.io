@@ -1,0 +1,38 @@
+---
+import type { Publication } from '../data/publications';
+import { topics } from '../data/topics';
+interface Props { items: Publication[]; }
+const { items } = Astro.props;
+const authors = (a: string) => a.replace(/von Hafe, F\./g, '<strong>von Hafe, F.</strong>');
+---
+<ul class="pubs">
+  {items.map((p, i) => {
+    const link = p.doi ? `https://doi.org/${p.doi}` : p.url;
+    const repeat = i > 0 && items[i - 1].year === p.year;
+    return (
+      <li class="pub" data-topics={p.topics.join(' ')}>
+        <div class={repeat ? 'yr repeat' : 'yr'}>{p.year}</div>
+        <div>
+          <p class="t">{link ? <a href={link}>{p.title}</a> : p.title}</p>
+          <p class="au" set:html={authors(p.authors)} />
+          <p class="ve" set:html={p.venue} />
+          <div class="tags">
+            {p.topics.map((t) => <span class="tag" style={`--c:var(--t-${t})`}>{topics[t]}</span>)}
+          </div>
+          {(p.doi || p.pdf || p.summary) && (
+            <div class="links">
+              {p.doi && <a href={link}>DOI {p.doi}</a>}
+              {p.pdf && <a href={p.pdf}>{p.pdfLabel ?? 'PDF'}</a>}
+              {p.summary && (
+                <details>
+                  <summary>Summary</summary>
+                  <p class="abstract">{p.summary}</p>
+                </details>
+              )}
+            </div>
+          )}
+        </div>
+      </li>
+    );
+  })}
+</ul>
