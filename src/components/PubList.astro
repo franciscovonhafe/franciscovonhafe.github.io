@@ -1,8 +1,8 @@
 ---
 import type { Publication } from '../data/publications';
 import { topics } from '../data/topics';
-interface Props { items: Publication[]; }
-const { items } = Astro.props;
+interface Props { items: Publication[]; showTags?: boolean; }
+const { items, showTags = true } = Astro.props;
 const authors = (a: string) => a.replace(/von Hafe, F\./g, '<strong>von Hafe, F.</strong>');
 ---
 <ul class="pubs">
@@ -16,9 +16,9 @@ const authors = (a: string) => a.replace(/von Hafe, F\./g, '<strong>von Hafe, F.
           <p class="t">{link ? <a href={link}>{p.title}</a> : p.title}</p>
           <p class="au" set:html={authors(p.authors)} />
           <p class="ve" set:html={p.venue} />
-          <div class="tags">
+          {showTags && <div class="tags">
             {p.topics.map((t) => <span class="tag" style={`--c:var(--t-${t})`}>{topics[t]}</span>)}
-          </div>
+          </div>}
           {(p.doi || p.pdf || p.summary) && (
             <div class="links">
               {p.doi && <a href={link}>DOI {p.doi}</a>}

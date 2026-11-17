@@ -23,8 +23,8 @@ const featured = publications.filter((p) => p.featured).sort((a, b) => b.year - 
     </div>
     <figure class="portrait">
       <picture>
-        <source type="image/webp" srcset="/images/francisco-von-hafe-480.webp 480w, /images/francisco-von-hafe-960.webp 960w" sizes="(max-width: 680px) 15rem, 19.5rem" />
-        <img src="/images/francisco-von-hafe-480.jpg" srcset="/images/francisco-von-hafe-480.jpg 480w, /images/francisco-von-hafe-960.jpg 960w" sizes="(max-width: 680px) 15rem, 19.5rem" width="480" height="537" alt="Portrait of Francisco von Hafe" fetchpriority="high" />
+        <source type="image/webp" srcset="/images/francisco-von-hafe-480.webp 480w, /images/francisco-von-hafe-960.webp 960w" sizes="(max-width: 680px) 15rem, 18rem" />
+        <img src="/images/francisco-von-hafe-480.jpg" srcset="/images/francisco-von-hafe-480.jpg 480w, /images/francisco-von-hafe-960.jpg 960w" sizes="(max-width: 680px) 15rem, 18rem" width="480" height="537" alt="Portrait of Francisco von Hafe" fetchpriority="high" />
       </picture>
     </figure>
   </div>
@@ -35,6 +35,6 @@ const featured = publications.filter((p) => p.featured).sort((a, b) => b.year - 
   </ul>
 
   <h2>Selected publications</h2>
-  <PubList items={featured} />
+  <PubList items={featured} showTags={false} />
   <p style="margin-top:1.2rem"><a href="/research/">All publications and research outputs</a></p>
 </Base>
