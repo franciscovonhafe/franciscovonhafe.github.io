@@ -13,24 +13,25 @@ const featured = publications.filter((p) => p.featured).sort((a, b) => b.year - 
         {site.roles.map((r) => <span>{r.text} <a href={r.href}>{r.org}</a></span>)}
       </p>
       <div class="bio">{site.bio.map((p) => <p>{p}</p>)}</div>
-      <ul class="quick">
-        <li><a href="/research/">Research</a></li>
-        <li><a href={site.cv.href}>CV (PDF)</a></li>
-        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-        <li><a href={site.profiles[0].href}>ORCID</a></li>
+      <ul class="actions">
+        <li><a class="btn primary" href="/research/">Research</a></li>
+        <li><a class="btn secondary" href={`mailto:${site.email}`}>Email me</a></li>
+        <li class="break" aria-hidden="true"></li>
+        <li class="plain"><a href={site.cv.href}>CV (PDF)</a></li>
+        <li class="plain"><a href={site.profiles[0].href}>ORCID</a></li>
       </ul>
     </div>
     <figure class="portrait">
       <picture>
-        <source type="image/webp" srcset="/images/francisco-von-hafe-480.webp 480w, /images/francisco-von-hafe-960.webp 960w" sizes="(max-width: 680px) 8.5rem, 12.5rem" />
-        <img src="/images/francisco-von-hafe-480.jpg" srcset="/images/francisco-von-hafe-480.jpg 480w, /images/francisco-von-hafe-960.jpg 960w" sizes="(max-width: 680px) 8.5rem, 12.5rem" width="480" height="537" alt="Portrait of Francisco von Hafe" fetchpriority="high" />
+        <source type="image/webp" srcset="/images/francisco-von-hafe-480.webp 480w, /images/francisco-von-hafe-960.webp 960w" sizes="(max-width: 680px) 15rem, 19.5rem" />
+        <img src="/images/francisco-von-hafe-480.jpg" srcset="/images/francisco-von-hafe-480.jpg 480w, /images/francisco-von-hafe-960.jpg 960w" sizes="(max-width: 680px) 15rem, 19.5rem" width="480" height="537" alt="Portrait of Francisco von Hafe" fetchpriority="high" />
       </picture>
     </figure>
   </div>
 
   <h2>Research interests</h2>
   <ul class="interests">
-    {site.interests.map((i) => <li style={i.topic ? `--c:var(--t-${i.topic})` : undefined}>{i.label}</li>)}
+    {site.interests.map((i) => <li>{i.label}</li>)}
   </ul>
 
   <h2>Selected publications</h2>
