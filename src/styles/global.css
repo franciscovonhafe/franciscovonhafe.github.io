@@ -29,7 +29,7 @@ a:hover { color: var(--accent-hover); text-decoration-color: currentColor; }
 .skip { position: absolute; left: -999px; top: 0; }
 .skip:focus { left: 1rem; top: 1rem; background: var(--bg); padding: .4rem .7rem; z-index: 20; }
 
-.wrap { max-width: 62rem; margin: 0 auto; padding: 0 1.5rem; }
+.wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
 
 /* Header */
 header.site { background: var(--head); color: #fff; }
@@ -54,7 +54,13 @@ p { margin: 0 0 1rem; }
 
 /* Home intro */
 .band { background: var(--tint); box-shadow: 0 0 0 100vmax var(--tint); clip-path: inset(0 -100vmax); margin-top: -3rem; padding: 3.5rem 0 3.2rem; }
-.intro { display: grid; grid-template-columns: 1fr 18rem; gap: 3rem; align-items: start; }
+.intro { display: grid; grid-template-columns: 1fr 22rem; grid-template-areas: "text photo" "interests interests"; column-gap: 4rem; align-items: start; }
+.intro-text { grid-area: text; }
+.intro .portrait { grid-area: photo; }
+.intro-interests { grid-area: interests; }
+.intro-interests h2 { font-size: 1.3rem; margin: 2.4rem 0 .9rem; }
+.intro-interests .interests { columns: 3; column-gap: 2.5rem; }
+.intro-interests .interests li { padding: .15rem 0 .15rem 1.4rem; font-size: 1rem; }
 .intro h1 { font-size: 3.3rem; line-height: 1.02; margin: .2rem 0 1.1rem; letter-spacing: -.025em; font-weight: 500; }
 .roles { font-family: var(--serif); font-size: 1.25rem; line-height: 1.45; margin: 0 0 1.6rem; padding-left: 1rem; border-left: 3px solid var(--gold); }
 .roles span { display: block; }
@@ -122,12 +128,19 @@ footer p { margin: 0; }
 footer a { color: var(--muted); }
 footer a:hover { color: var(--text); }
 
+@media (max-width: 960px) and (min-width: 681px) {
+  .intro { grid-template-columns: 1fr 15rem; column-gap: 2.5rem; }
+  .intro h1 { font-size: 2.8rem; }
+  .intro-interests .interests { columns: 2; }
+}
 @media (max-width: 680px) {
   main.wrap { padding-top: 2rem; }
   .band { margin-top: -2rem; padding-top: 2rem; }
   .band { padding-bottom: 2.4rem; }
-  .intro { grid-template-columns: 1fr; gap: 1.8rem; }
-  .portrait { order: -1; width: min(15rem, 68%); }
+  .intro { grid-template-columns: 1fr; grid-template-areas: "photo" "text" "interests"; grid-template-rows: auto; row-gap: 1.8rem; }
+  .portrait { width: min(15rem, 68%); }
+  .intro-interests h2 { margin-top: .4rem; }
+  .intro-interests .interests { columns: 1; }
   .intro h1 { font-size: 2.6rem; }
   .roles { font-size: 1.12rem; }
   .actions { gap: .7rem 1.1rem; }
